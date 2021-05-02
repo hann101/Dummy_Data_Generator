@@ -5,12 +5,12 @@
 
     <div class="card">
 
-      <h1 class="center">Create an Account</h1>
+      <h1 class="center">고객등록</h1>
 
       <form name="signup_form">
         <!-- script.js로 통함 -->
 
-        <label for="name">Name</label>
+        <label for="name">이름</label>
         <input type="text" name="name" class="field" required>
 
         <label for="email">Email</label>
@@ -18,7 +18,19 @@
 
         <label for="password">Password</label>
         <input type="password" name="password" class="field" required>
+
+        <label for="brith_yr">생년월일</label>
+        <input type="brith_yr" name="brith_yr" class="field" required>
+        
+        <label for="sex">성별</label>
+        <input type="sex" name="sex" class="field" required>
         <!-- 기본 컬럼 ㅁ여기에 등록하면 됨 -->
+
+        <label for="phone">전화번호</label>
+        <input type="phone" name="phone" class="field" required>
+
+
+
 
         <p class="error--hidden"></p>
 

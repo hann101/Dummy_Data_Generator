@@ -42,9 +42,6 @@ class User:
 
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
         db.users.insert_one(user)
-        db.users.insert_one({'name':'bobby','age':21})
-        db.users.insert_one({'name':'kay','age':27})
-        db.users.insert_one({'name':'john','age':30})
         db.users.insert_one({'name':'john','age':[{"chat" : "Bravo","message" : "Hey Man!" }]})
 
         return jsonify(user), 200
@@ -102,8 +99,9 @@ def upload_complete():
     pic = request.files['pic']
 
     # 이메일 검색 -> DB 찾아서 -> 파일저장
-    # email = 'hann101@naver.com'
-    email = 'kim101@naver.com'
+    # 예시
+    email = 'hann101@naver.com'
+    # email = 'kim101@naver.com'
 
 
     confirm_email = db.users.find_one({"email": email})
@@ -136,7 +134,13 @@ def upload_complete():
         request.form.get("key") :request.form.get("value")
         # "img_name"
     }
-    db.metatags.insert_one(metatag)
+    # metatag ={
+    # "dye" :"bbb",
+    # "color" : "bbb"
+    # "img_name"
+    # }
+    db.users.update_one({'email':email},{'$push':{'image':metatag}})
+    # db.metatags.insert_one(metatag)
 
     return 'Img Uploaded!', 200
 
