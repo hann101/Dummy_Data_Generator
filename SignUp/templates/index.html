@@ -8,6 +8,12 @@
 
 <form action="http://localhost:5000/upload/complete" enctype="multipart/form-data" method="POST"> 
    <input type="file" name="pic" />
+   <p>
+    <input type="text" name="key" /><input type="text" name="value" />
+    <!-- 미용사 가입은 값을 하나 받지만.. 키벨류는 무한정
+    어떻게 하면 여러개의 키벨류를 받을 수 잇을지 고민해봐야 -->
+    <!-- <input type="text" name="key" /><input type="text" name="value" />   반복문 활용하자 -->
+   </p>
    <input type="submit" value="Upload a file"/>
 </form>
  

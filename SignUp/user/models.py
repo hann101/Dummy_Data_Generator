@@ -6,14 +6,14 @@ from main import db
 # ImportError: cannot import name 'User' from partially initialized module 'user.models' (most likely due to a circular import) 이 내용,,,
 import uuid
 
-class User:
+class Designer:
     # 회원 정보 등록
     # 회원 개인정보 등록하는 컬럼
     def signup(self):
         print(request.form)
 
         # 사용자 객체 생성
-        user = {
+        designer = {
             "_id" : uuid.uuid4().hex,
             "name" : request.form.get('name'),
             "email" : request.form.get('email'),
@@ -21,8 +21,8 @@ class User:
             #여기에 추가하면 된다.
         }
 
-        user['password'] = pbkdf2_sha256.encrypt(user['password'])
-        # db.users.insert_one(user)
+        designer['password'] = pbkdf2_sha256.encrypt(user['password'])
+        db.users.insert_one(user)
 
         return jsonify(user), 200
     

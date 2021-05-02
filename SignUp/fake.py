@@ -7,7 +7,7 @@ import uuid
 
 from pymongo import MongoClient 
 client = MongoClient('localhost', 27017)
-db = client.user_login_system
+db = client.designer_login_system
 
 # 현재 위치 저장
 current_dir = os.getcwd() +'\SignUp\image\ '
@@ -25,14 +25,19 @@ app = Flask(__name__)
 
 
 
-class User:
-    # 회원 정보 등록 (기본정보)
+class Designer:
+    # def start_session(self, designer):
+    #     session['logged_in'] = True
+    #     session['designer'] = designer
+    #     return jsonify(designer), 200
+    
+    # 회원 정보 등록 (기본정보)------------------------------
     # 회원 개인정보 등록하는 컬럼
     def signup(self):
         print(request.form)
 
         # 사용자 객체 생성
-        user = {
+        designer = {
             "_id" : uuid.uuid4().hex,
             "name" : request.form.get('name'),
             "email" : request.form.get('email'),
@@ -40,14 +45,23 @@ class User:
             #여기에 추가하면 된다.
         }
 
-        user['password'] = pbkdf2_sha256.encrypt(user['password'])
-        db.users.insert_one(user)
-        db.users.insert_one({'name':'bobby','age':21})
-        db.users.insert_one({'name':'kay','age':27})
-        db.users.insert_one({'name':'john','age':30})
-        db.users.insert_one({'name':'john','age':[{"chat" : "Bravo","message" : "Hey Man!" }]})
+        designer['password'] = pbkdf2_sha256.encrypt(designer['password'])
+        
+        
+        
+        if db.designers.find_one({"email": designer['email']}):
+            return jsonify({"error":"Email address already in use"}), 400
+            # 경고가 안나옴..
 
-        return jsonify(user), 200
+        else:
+            db.designers.insert_one(designer)
+            return "Complete", 200
+        
+        # return jsonify({"error": "SignUp failed"})
+            
+            # db.designers.insert_one({'name':'john','age':[{"chat" : "Bravo","message" : "Hey Man!" }]})
+
+
 
 # class User:
 #     # 회원 정보 등록 (기본정보)
@@ -82,14 +96,12 @@ def hello_world():
 
 @app.route('/dashboard/')
 def dashboard():
-    # return render_template('dashboard.html')
-    return "signup complete"
+    return render_template('dashboard.html')
 
-# 고객 등록
-# 미용사는 일단 제외
-@app.route("/user/signup", methods=['POST'])
+# 미용사 회원가입
+@app.route("/designer/signup", methods=['POST'])
 def signup():
-  return User().signup()
+  return Designer().signup()
 
 @app.route('/upload', methods=['GET'])
 def upload():
@@ -97,65 +109,23 @@ def upload():
 
 @app.route('/upload/complete', methods=['POST'])
 def upload_complete():
-
-    # 이미지 받기
     pic = request.files['pic']
+    pic.save(current_dir + secure_filename(pic.filename))
 
-    # 이메일 검색 -> DB 찾아서 -> 파일저장
-    # email = 'hann101@naver.com'
-    email = 'kim101@naver.com'
-
-
-    confirm_email = db.users.find_one({"email": email})
-    #   print(db.users.find_one({"email": email_con}))
-    if email in confirm_email['email']:
-    #   TypeError: 'NoneType' object is not subscriptable
-    #   데이터를 못가져오고있다.none으로..
-    #   애초에 db에 데이터를 저장해놓지 않아서 못불러옴.
-    #     # 이메일 있는지 확인
-        print('이메일이 확인되었습니다. ')
-    #     # 현 디렉토리에 파일명(고객이메일)이 있는지 확인
-        list_check = os.listdir(current_dir)
-        print(list_check)
-        image_dir = current_dir + email +'\ '
-        image_dir = image_dir.replace(" ", "")
-        
-        if email not in list_check:
-            # mk_dir = current_dir + email
-            #current_dir == os.getcwd() +'\SignUp\image\ '
-            # mk_dir = mk_dir.replace(" ", "")
-            print(image_dir)
-            os.mkdir(image_dir)
-            pic.save(image_dir + secure_filename(pic.filename))
-            
-        else:
-            pic.save(image_dir + secure_filename(pic.filename)) 
-            
-
+    #json받아서 -> 서버 전달
     metatag ={
         request.form.get("key") :request.form.get("value")
-        # "img_name"
+        "img_name"
     }
+# 이미지는 경로에 따로저장, 이미지 번호랑 고객 번호랑 매치, 
     db.metatags.insert_one(metatag)
 
-    return 'Img Uploaded!', 200
 
-# 메타태그
-#     # 이미지 받아서
-#     pic = request.files['pic']
-#     # 새로운 파일이 없으면 파일을 만들고
-#     # 아니면 기존의 파일(이메일이름)에 이미지를 저장한다.
-#     pic.save(current_dir + secure_filename(pic.filename))
-#     pic.save(image_dir + secure_filename(pic.filename))
+
 
     # 입력한 고객과 매칭해야함..db에서 가져와야함..
     # 그리고 메타태그 붙일 때 고객의 정보에 붙어야함..
-    # securename이 필요한가? 필요없을듯
-        #json받아서 -> 서버 전달
-
-# 이미지는 경로에 따로저장, 이미지 번호랑 고객 번호랑 매치, 
-
-
+    return 'Img Uploaded!', 200
 
 #이미지, 메타태그
 # @app.route('/upload', methods=['GET']) 
