@@ -1,6 +1,6 @@
 from flask import Flask,jsonify,request
 from passlib.hash import pbkdf2_sha256
-
+from main import db
 
 # 이 문장을 넣으니깐 오류가 발생함... 
 # ImportError: cannot import name 'User' from partially initialized module 'user.models' (most likely due to a circular import) 이 내용,,,
