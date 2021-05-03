@@ -124,8 +124,7 @@ def upload_complete():
 
 
 
-        # image_dir  ->   C:\Flask_Test\SignUp\image\kimm101@naver.com\
-        # current_dir  -> C:\Flask_Test\SignUp\image\
+
         # 해당 이메일의 파일 갯수 +1 ==create_png_num
 
 
@@ -163,7 +162,6 @@ def upload_complete():
 
 
         #파일 이름 변경
-        # num_of_png = len(os.listdir(current_dir)) + 1
         # num_of_png = str(num_of_png) +'.png'
         # print(num_of_png)
         # print(type(num_of_png))
@@ -174,7 +172,32 @@ def upload_complete():
 
             
         else:
-            pic.save(image_dir + secure_filename(pic.filename)) 
+            num_of_png = len(os.listdir(image_dir)) +1
+            print(num_of_png)
+            num_of_png = str(num_of_png)
+            # 1개 파일이 있으면 2가 들어감
+            new_filename = num_of_png + '.png'
+            new_filename = str(new_filename)
+            pic.save(image_dir + new_filename) 
+
+
+            # list_file = os.listdir(image_dir)
+
+            # create_file = secure_filename(pic.filename)
+
+            # num_filename = str(num_of_png) + '.png'
+            # for i in num_of_png:
+            #     old_filename = str(i) +".png"
+            #     if old_filename != num_filename:
+                    # 1.png가 있
+
+                
+            # image_dir  ->   C:\Flask_Test\SignUp\image\kimm101@naver.com\
+            # current_dir  -> C:\Flask_Test\SignUp\image\
+
+            # print(new_file)
+            # print(num_of_png)
+            
             # changeName(image_dir,email,create_png_num)
 
     metatag ={
