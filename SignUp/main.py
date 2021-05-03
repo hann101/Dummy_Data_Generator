@@ -136,10 +136,12 @@ def upload_complete():
         #     print(create_png_num)
         #     print(type(create_png_num))
 
-        #     for filename in os.listdir(image_dir):
-        #         if
-        #         print(path+filename, '=>', path+str(cName)+str(create_png_num)+'.png')
-        #         os.rename(path+filename, path+str(cName)+str(create_png_num)+'.png') 
+        # for filename in os.listdir(image_dir) :
+        #     # 1.png,2.png
+        #     filename.
+        #     if filename is not
+        #     print(path+filename, '=>', path+str(cName)+str(create_png_num)+'.png')
+        #     os.rename(path+filename, path+str(cName)+str(create_png_num)+'.png') 
         
 
 
@@ -150,10 +152,11 @@ def upload_complete():
             #current_dir == os.getcwd() +'\SignUp\image\ '
             # mk_dir = mk_dir.replace(" ", "")
             print(image_dir)
-            os.mkdir(image_dir)
-            pic.save(image_dir + secure_filename(pic.filename))
-            changeName(image_dir,email ,num_of_png)
-            #
+            # os.mkdir(image_dir)
+            # # pic.save(image_dir + secure_filename(pic.filename))
+            # os.rename(path+filename, path+str(cName)+str(i)+'.jpg')
+            # changeName(image_dir,email ,num_of_png)
+            # #
 
         # db.users.insert_one({'name':'john','image':[{"file_name" : "picture.png","file_name" : "picture_1.png" }]})
 
