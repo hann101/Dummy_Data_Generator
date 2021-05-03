@@ -86,7 +86,6 @@ def upload_complete():
 
     # 이미지 받기
     pic = request.files['pic']
-    print(type(pic.filename))
     print(pic)
     # 이메일 검색 -> DB 찾아서 -> 파일저장
     # 예시
@@ -104,58 +103,33 @@ def upload_complete():
     #   애초에 db에 데이터를 저장해놓지 않아서 못불러옴.
     #     # 이메일 있는지 확인
         print('이메일이 확인되었습니다. ')
-
         #파일 이름 변경
-
-
-
-
     #     # 현 디렉토리에 파일명(고객이메일)이 있는지 확인
         list_check = os.listdir(current_dir)
         print(list_check)
+
         image_dir = current_dir + email +'\ '
         image_dir = image_dir.replace(" ", "")
-
-
-        print(current_dir)
-        print(image_dir)
-        print(os.listdir(image_dir))
-
-
-
-
-
-        # 해당 이메일의 파일 갯수 +1 ==create_png_num
-
-
-        # # 이미지 이름바꾸기..
-        # create_png_num = len(os.listdir(image_dir)) + 1
-        # if os.listdir(image_dir)
-        # # create_png_num = str(create_png_num)
-        #     print(create_png_num)
-        #     print(type(create_png_num))
-
-        # for filename in os.listdir(image_dir) :
-        #     # 1.png,2.png
-        #     filename.
-        #     if filename is not
-        #     print(path+filename, '=>', path+str(cName)+str(create_png_num)+'.png')
-        #     os.rename(path+filename, path+str(cName)+str(create_png_num)+'.png') 
-        
-
-
+        # print(current_dir)
+        # print(image_dir)
+        # print(os.listdir(image_dir))
+        # image_dir  ->   C:\Flask_Test\SignUp\image\kimm101@naver.com\
+        # current_dir  -> C:\Flask_Test\SignUp\image\
 
         if email not in list_check:
             # 해당 이메일의 폴더가 없으면 새로운 폴더를 만들고, 해당 이미지를 저장
-            # mk_dir = current_dir + email
+            mk_dir = current_dir + email
             #current_dir == os.getcwd() +'\SignUp\image\ '
-            # mk_dir = mk_dir.replace(" ", "")
-            print(image_dir)
-            # os.mkdir(image_dir)
-            # # pic.save(image_dir + secure_filename(pic.filename))
-            # os.rename(path+filename, path+str(cName)+str(i)+'.jpg')
-            # changeName(image_dir,email ,num_of_png)
-            # #
+            mk_dir = mk_dir.replace(" ", "")
+            # mk_dir이랑 image_dir은 \ 표기 붙냐 안붙야에 따라 파일 디렉토리가 구분되는것
+            # 파일 이름 만드는 거는 함수로 한번에 정리하는게 깕글할듯]
+            os.mkdir(mk_dir)
+            num_of_png = len(os.listdir(image_dir)) +1
+            num_of_png = str(num_of_png)
+            # # 1개 파일이 있으면 2가 들어감
+            new_filename = num_of_png + '.png'
+            new_filename = str(new_filename)
+            pic.save(image_dir + new_filename)
 
         # db.users.insert_one({'name':'john','image':[{"file_name" : "picture.png","file_name" : "picture_1.png" }]})
 
