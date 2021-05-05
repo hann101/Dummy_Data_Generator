@@ -1,19 +1,23 @@
 from flask import Flask
 
-from .main import main
-from signup.user.second import second
-
-from .extenstion import mongo
 
 def create_app():
     app = Flask(__name__)
 
-    app.config['MONGP_URI'] = 'mongodb+srv://hjm_user:1234@cluster0.5ed3m.mongodb.net/mydb?retryWrites=true&w=majority'
-    
-    mongo.init_app(app)
+    from pymongo import MongoClient 
+    client = MongoClient('localhost', 27017)
+    db = client.user_login_system
 
-    app.register_blueprint(main)
-    app.register_blueprint(second, url_prefix="/user")
+    from.views import main
+    app.register_blueprint(main.main_bp)
+
+
+    from.user import routes
+    app.register_blueprint(routes.bp)
+
+    from .upload import routes
+    app.register_blueprint(routes.upload_bp)
+
     
     return app
 
