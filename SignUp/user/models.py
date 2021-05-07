@@ -2,9 +2,10 @@ from flask import Flask,jsonify,request
 from passlib.hash import pbkdf2_sha256
 import time
 
-from pymongo import MongoClient 
-client = MongoClient('localhost', 27017)
-db = client.user_login_system
+
+# from pymongo import MongoClient 
+# client = MongoClient('localhost', 27017)
+# db = client.user_login_system
 nowDate = time.strftime('%y-%m-%d %H:%M:%S')
 
 # 이 문장을 넣으니깐 오류가 발생함... 
@@ -40,4 +41,7 @@ class User:
         # db.users.insert_one({'name':'john','image':[{"file_name" : "picture.png","file_name" : "picture_1.png" }]})
 
         return jsonify(user), 200
+
+
+
 
