@@ -1,78 +1,42 @@
+import random
 from pymongo import mongo_client
 import uuid, time
 from pymongo import MongoClient 
+from Fake_data import Random_data
 
-nowDate = time.strftime('%y-%m-%d %H:%M:%S')
+# dummy.py 파일을 실행하면  dummy data가 생성됩니다.
+# id_count는 10개의 ID갯수를 말함.
+# rand_nm은 랜덤으로 2~6개의 메타태그 생성.
+# 그냥 원하는 메타태그 갯수를 넣어도 됨.
+# 입맛대로 고르시면 됨.
 
+id_count = 10
+rand_nm = random.randint(2,6)
+
+
+#Database
 client = MongoClient('localhost', 27017)
-db = client.user_login_system
-# email = 'hann101@naver.com'
-email = 'kim101@nate.com'
-# email = 'hanji101@naver.com'
-name = 'han'
-age = '123'
-sex = 'M'
-address = '서울'
-phone_num = '01013'
+db = client.fake
 
 
-# user = {
-#     "_id" : uuid.uuid4().hex,
-#     "email" : email,
-#     "name" : name,
-#     "age" : age,
-#     "sex" : sex,
-#     "address" : address,
-#     "phone_num" : phone_num,
-#     "created_at":nowDate
+for i in range(0,id_count):
+
+# 가짜 이메일 만들고
+    fk_id = Random_data().fakeId()
+    user = {
+        "_id" : fk_id,
+        "image":[]
+    }
+
+    db.users.insert_one(user)
+
+    # 2~6개의 메타태그가 생김
     
-#     # "_id" : uuid.uuid4().hex,
-#     # "name" : request.form.get('name'),
-#     # "email" : request.form.get('email'),
-#     # "password" : request.form.get('password')
-#     #여기에 추가하면 된다.
-# }
+    for j in range(1,rand_nm):
+        metatag ={
+        "image_path" :str(i)+".png",
+        "created_at" : Random_data().fakeTime(),
+        "tag" :[Random_data().fakeAddress(), Random_data().fakeTag(), Random_data().fakeSex()]
+        }
 
-
-# db.users.insert_one(user)
-
-metatag ={
-"image_path" :"C://hello//"+email,
-# 이미지 파일명 imagepath는 파일명으로
-"dye" : "a",
-"color" : "a",
-# "img_name"
-}
-
-# print(db.users.find_one({"image.dye" : "a"},{"image.image_path":1}))
-db.users.update_one({'email':email},{'$push':{'image':metatag}})
-# db.users.update_one({'email':email},{'$push':{'image':metatag}})
-# a = list(db.users.find_one({'image.dye':{"$exists":True}},{'image.image_path','image.dye'}))
-# print(a)
-# db.hair.find({'image.펌':{"$exists":True}},{'image.image_path','image.펌'}))
-
-
-
-
-
-
-
-
-
-# b=list(db.hair.find({'image.펌':{"$exists":True}},{'image.image_path','image.펌'}))
-# print(b)
-# wow=[]
-# for i in range(len(b)):
-#     print(len(b))
-#         if type(b[i]['image']) == list:
-#         for ii in range(len(b[i]['image'])):
-#             print(len(b[i]['image'][ii]))
-#             if len(b[i]['image'][ii]) >=2:
-#                 fu=b[i]['image'][ii]['image_path']
-#                 wow.append(fu)
-#                 print(b[i]['image'][ii]['image_path']) # 크기 2개임
-#     if type(b[i]['image']) == dict:
-#         print(b[i]['image']['image_path'])
-#         uk = b[i]['image']['image_path']
-#         wow.append(uk)
-# print(하하)
+        db.users.update_one({'_id':fk_id},{'$push':{'tag':metatag}})
